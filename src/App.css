@@ -17,6 +17,8 @@
 .search-form input[type="text"] {
   width: 100%;
   outline: none;
+  font-size: 16px;
+  border: none;
 }
 
 .map {
@@ -59,6 +61,6 @@
 
 .search-form ul li:hover:before {
   color: #000;
-  font-weight: normal;
+  /*font-weight: normal;*/
 }
 

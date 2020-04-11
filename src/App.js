@@ -7,29 +7,22 @@ import {
   TileLayer,
   Polygon
 } from 'react-leaflet';
-import useFetch from './utils/useFetch';
 import './App.css';
 
 function App(props) {
   const [barangays, setBarangays] = useState([])
+  const [zoom, setZoom] = useState(13)
   const [boundary, setBoundary] = useState(0)
   const [marker, setMarkerPosition] = useState(null)
   const [polygon, setPolygon] = useState(0)
   useEffect(() => {
-    //fetch(`http://localhost:4001/api/reports/city/quezon-city/boundary/d57235ab-65bb-48b6-8cc6-430ae9525258`)
-      //.then(response => response.json())
-      //.then((data) => {
-        //setBoundary([14.7123189, 121.09594745])
-        //setPolygon(data.result.data)
-    //})
-      
     fetch(`http://localhost:4001/api/reports/city/quezon-city`)
       .then(response => response.json())
       .then((data) => {
         const { result } = data
         setBarangays(data)
-        setBoundary([14.7123189, 121.09594745])
-      
+        setBoundary([14.655012249999999, 121.03174620638671])
+
         const extractBarangay = pick(['barangays'])
         const transformData = compose( // TODO: Convert to reduce
           flatten,
@@ -49,12 +42,23 @@ function App(props) {
     setMarkerPosition(e.latlng)
   }
 
+  const getBrgyBoundary = (brgy) => {
+    fetch(`http://localhost:4001/api/reports/city/quezon-city/boundary/${brgy.id}`)
+      .then(response => response.json())
+      .then((data) => {
+        setBoundary([data.result.centre.lat, data.result.centre.lng])
+        setZoom(15)
+        setPolygon(data.result.brgy_boundaries)
+    })
+    console.log('get get aw..')
+  }
+
   return (
     <div className="App">
       <div className="columns">
         <div className="column is-12 map-container">
-            <Map className="map" center={boundary} zoom={13}>
-            <Polygon onClick={clickPolygon} color="blue" positions={polygon} />
+            <Map animate={true} className="map" center={boundary} zoom={zoom}>
+            <Polygon onClick={clickPolygon} color="#1890ff" positions={polygon} />
               {marker &&
                 <Marker position={marker}></Marker>
               }
@@ -65,9 +69,7 @@ function App(props) {
           </Map>
             <div className="search-form">
                 <Downshift
-                  onChange={selection => {
-                    console.log({ selection })
-                  }}
+                  onChange={getBrgyBoundary}
                   itemToString={item => (item ? item.name : '')}
                 >
                 {({
@@ -76,12 +78,14 @@ function App(props) {
                   isOpen,
                   inputValue,
                   highlightedIndex,
+                  getMenuProps,
+                  getRootProps,
                   }) => (
                     <div>
                       <input {...getInputProps()} type="text" placeholder="Search Barangay"/>
                         {barangays && barangays.length > 0 && (
-                          <ul>
-                            {barangays.filter(brgy => brgy.name.toLowerCase().includes(inputValue.toLowerCase())).map((brgy, index) => (
+                          <ul {...getMenuProps()}>
+                            {isOpen && barangays.filter(brgy => brgy.name.toLowerCase().includes(inputValue.toLowerCase())).map((brgy, index) => (
                               <li
                                 key={brgy.name}
                                 {...getItemProps({
@@ -96,15 +100,6 @@ function App(props) {
                             ))}
                           </ul>
                         )}
-                            {/*barangays && barangays.length > 0 && barangays.map(brgy => 
-                        <li
-                          key={brgy.name}
-                          {...getItemProps({
-                            key: brgy.name,
-                            item: brgy,
-                          })}
-                        >{brgy.name}</li>
-                            ) */}
                     </div>
                   )}
               </Downshift>
