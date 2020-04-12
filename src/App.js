@@ -13,7 +13,7 @@ import { REACT_APP_BASE_URL } from './environment'
 
 function App(props) {
   const [barangays, setBarangays] = useState([])
-  const [zoom, setZoom] = useState(13)
+  const [zoom, setZoom] = useState(15)
   const [boundary, setBoundary] = useState(0)
   const [marker, setMarkerPosition] = useState(null)
   const [polygon, setPolygon] = useState(0)
