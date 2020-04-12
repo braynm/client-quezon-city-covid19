@@ -7,7 +7,9 @@ import {
   TileLayer,
   Polygon
 } from 'react-leaflet';
+
 import './App.css';
+import { REACT_APP_BASE_URL } from './environment'
 
 function App(props) {
   const [barangays, setBarangays] = useState([])
@@ -16,7 +18,7 @@ function App(props) {
   const [marker, setMarkerPosition] = useState(null)
   const [polygon, setPolygon] = useState(0)
   useEffect(() => {
-    fetch(`http://localhost:4001/api/reports/city/quezon-city`)
+    fetch(`${REACT_APP_BASE_URL}/api/reports/city/quezon-city`)
       .then(response => response.json())
       .then((data) => {
         const { result } = data
@@ -43,14 +45,13 @@ function App(props) {
   }
 
   const getBrgyBoundary = (brgy) => {
-    fetch(`http://localhost:4001/api/reports/city/quezon-city/boundary/${brgy.id}`)
+    fetch(`${REACT_APP_BASE_URL}/api/reports/city/quezon-city/boundary/${brgy.id}`)
       .then(response => response.json())
       .then((data) => {
         setBoundary([data.result.centre.lat, data.result.centre.lng])
         setZoom(15)
         setPolygon(data.result.brgy_boundaries)
     })
-    console.log('get get aw..')
   }
 
   return (
