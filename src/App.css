@@ -1,9 +1,12 @@
 .App, body, map-container  {
   height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .map-container {
   position: relative;
+  height: 100vh;
 }
 
 .search-form {

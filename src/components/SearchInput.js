@@ -1,8 +1,12 @@
 import React from 'react';
+import styled from 'styled-components'
+
+const StyledInput = styled.input``;
 
 function SearchInput(props) {
-  return
-    <input />
+  return (
+    <StyledInput {...props} />
+  )
 }
 
 export default SearchInput;
