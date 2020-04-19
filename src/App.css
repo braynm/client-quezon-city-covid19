@@ -17,6 +17,26 @@
   width: 35%;
 }
 
+@media screen and (min-width:1024px) {
+ .search-form {
+    position: absolute;
+    z-index: 999;
+    top: 10%;
+    left: 35%;
+    width: 35%;
+  } 
+}
+
+@media screen and (max-width:800px) {
+ .search-form {
+    position: absolute;
+    z-index: 999;
+    top: 10%;
+    left: 18%;
+    width: 70%;
+  } 
+}
+
 .map {
   width: 100%;
   height: 100vh;
