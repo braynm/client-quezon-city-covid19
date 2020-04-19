@@ -22,7 +22,6 @@ function App(props) {
   const [marker, setMarkerPosition] = useState(null);
   const [polygon, setPolygon] = useState(0);
   const [report, setReport] = useState({});
-  const [disabledInput, setDisabledInput] = useState(true);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetch(`${REACT_APP_BASE_URL}/api/reports/city/quezon-city`)
@@ -46,10 +45,6 @@ function App(props) {
       });
   }, []);
 
-
-  const clickPolygon = (e) => {
-    setMarkerPosition(e.latlng);
-  };
 
   const getBrgyBoundary = (brgy) => {
     setLoading(true);

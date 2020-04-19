@@ -1,15 +1,14 @@
 import React from 'react';
 import Downshift from 'downshift';
-import styled from 'styled-components';
+//import styled from 'styled-components';
 import SearchInput from './components/SearchInput';
 
 
-const Div = styled.div`
+//const Div = styled.div`
   
-`;
+//`;
 
 function Search({ barangays, getBrgyBoundary, loading }) {
-  console.log({ loading })
   return (<div className="search-form">
     <Downshift
       onChange={getBrgyBoundary}
@@ -20,13 +19,23 @@ function Search({ barangays, getBrgyBoundary, loading }) {
         getItemProps,
         isOpen,
         inputValue,
+        clearSelection,
         highlightedIndex,
         getMenuProps,
       }) => (
         <div>
           <div className="field">
             <div className={`control ${loading ? 'is-loading' : ''} is-large`}>
-              <SearchInput disabled={loading} className="input is-large is-primary" {...getInputProps()} type="text" placeholder="Search Barangay" />
+              <SearchInput
+                {...getInputProps({
+                  onBlur: e => {
+                    e.target.blur()
+                }})}
+                disabled={loading}
+                className="input is-large is-primary"
+                type="text"
+                placeholder="Search Barangay"
+              />
             </div>
             {barangays && barangays.length > 0 && (
             <ul {...getMenuProps()}>
@@ -36,10 +45,10 @@ function Search({ barangays, getBrgyBoundary, loading }) {
                   {...getItemProps({
                     key: brgy.name,
                     item: brgy,
-                  index,
-                  style: {
-                    backgroundColor: highlightedIndex === index ? '#ddd' : '#fff',
-                  },
+                    index,
+                    style: {
+                      backgroundColor: highlightedIndex === index ? '#ddd' : '#fff',
+                    },
                   })}
                 >{brgy.name}
                 </li>
